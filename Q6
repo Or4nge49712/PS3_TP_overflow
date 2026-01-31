@@ -1,0 +1,79 @@
+#!/usr/bin/env python3
+import json
+import secrets
+import hashlib
+from ec_utils import (
+    N, G, Point,
+    point_multiply, mod_inverse
+)
+
+def load_firmwares(filename):
+    with open(filename, 'r') as f:
+        return json.load(f)
+
+# --- Phase 1 : La fonction de signature standard (avec k aléatoire) ---
+def ecdsa_sign(message_bytes, private_key_d):
+    """Signe un message avec un nonce k aléatoire (correcte implémentation)."""
+    h = hashlib.sha1(message_bytes).hexdigest()
+    e = int(h, 16)
+    
+    # Génération d'un nonce k aléatoire (différent à chaque fois !)
+    k = secrets.randbelow(N - 1) + 1
+    
+    # Calcul de R = k * G
+    R = point_multiply(k, G)
+    r = R.x % N
+    
+    # Calcul de s = k^-1 * (e + r*d) mod N
+    s = (mod_inverse(k, N) * (e + r * private_key_d)) % N
+    return r, s
+
+# --- Phase 3 : L'attaque ---
+def full_attack(fw1, fw2):
+    e1 = int(fw1["hash"], 16)
+    s1 = int(fw1["signature"]["s"], 16)
+    e2 = int(fw2["hash"], 16)
+    s2 = int(fw2["signature"]["s"], 16)
+    r = int(fw1["signature"]["r"], 16)
+
+    # Calcul du nonce k
+    num_k = (e1 - e2) % N
+    den_k = mod_inverse(s1 - s2, N)
+    k = (num_k * den_k) % N
+
+    # Calcul de la clé privée d
+    r_inv = mod_inverse(r, N)
+    d = (r_inv * (k * s1 - e1)) % N
+    return d, k
+
+# =============================================
+# EXÉCUTION (Questions 5 et 6)
+# =============================================
+if __name__ == "__main__":
+    # 1. Chargement
+    data = load_firmwares("firmwares.json")
+    fw_list = data["firmwares"]
+    sony_pub_x = int(data["public_key"]["x"], 16)
+
+    print("=== Opération fail0verflow ===")
+    
+    # 2. Attaque (Question 5)
+    d_recupere, k_recupere = full_attack(fw_list[0], fw_list[1])
+    print(f"[*] Clé privée d récupérée : {hex(d_recupere)}")
+
+    # Vérification
+    Q_prime = point_multiply(d_recupere, G)
+    if Q_prime.x == sony_pub_x:
+        print("[+] Good : La clé correspond à la clé publique de Sony.")
+    else:
+        print("[-] Fail : La clé est incorrecte.")
+
+    # 3. Forge (Question 6)
+    print("\n[*] Phase 4 : Forge d'un Homebrew...")
+    msg = "fail0verflow says: Hello World!"
+    
+    # On utilise la clé volée pour signer
+    r_f, s_f = ecdsa_sign(msg.encode(), d_recupere)
+
+    print(f"    Message : '{msg}'")
+    print(f"    Signature forgée : (r={hex(r_f)}, s={hex(s_f)})")
