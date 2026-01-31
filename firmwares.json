@@ -1,0 +1,62 @@
+{
+  "curve": "VSH (PS3)",
+  "curve_params": {
+    "p": "0xffffffffffffffff00000001ffffffffffffffff",
+    "a": "0xffffffffffffffff00000001fffffffffffffffc",
+    "b": "0xa68bedc33418029c1d3ce33b9a321fccbb9e0f0b",
+    "n": "0xfffffffffffffffeffffb5ae3c523e63944f2127",
+    "Gx": "0x128ec4256487fd8fdf64e2437bc0a1f6d5afde2c",
+    "Gy": "0x5958557eb1db001260425524dbc379d5ac5f4adf"
+  },
+  "public_key": {
+    "x": "0x3b286fb037cda5344ceb22c80a531b79458ddca7",
+    "y": "0x51a26fd73f42e4c944bb07823ce2c8be46631103"
+  },
+  "firmwares": [
+    {
+      "version": "3.40",
+      "description": "Security update",
+      "hash": "0x2d4890b6ee5349e2bcbc132043a67d30c4289170",
+      "signature": {
+        "r": "0x8b68b0211c6dba256a2802cac4538c8e7543cd92",
+        "s": "0xba0c3299e2ae383e3994065d4608dadd33fab01a"
+      }
+    },
+    {
+      "version": "3.41",
+      "description": "System software update",
+      "hash": "0x6dfacce42e42ddf970504097b36890226b6b6159",
+      "signature": {
+        "r": "0x8b68b0211c6dba256a2802cac4538c8e7543cd92",
+        "s": "0x6064371ddc0d68ceb5dc3b1177d12f7ce667e178"
+      }
+    },
+    {
+      "version": "3.42",
+      "description": "Minor fixes",
+      "hash": "0x1d1e11b7e45bbdfcb9e2497e0548dc296d47ae17",
+      "signature": {
+        "r": "0x8b68b0211c6dba256a2802cac4538c8e7543cd92",
+        "s": "0x40d6cafddaf2d8ad71ec7831335a1569bd531b79"
+      }
+    },
+    {
+      "version": "3.50",
+      "description": "New features",
+      "hash": "0x77f8365622e15211e6a3c29798c5f64caf8de3ff",
+      "signature": {
+        "r": "0x8b68b0211c6dba256a2802cac4538c8e7543cd92",
+        "s": "0x69e57ccdca73d2c798e91af34766b6a2b7d6b5c2"
+      }
+    },
+    {
+      "version": "3.55",
+      "description": "Latest update",
+      "hash": "0x5d37df4734cdc9812837323768c32c39d413956c",
+      "signature": {
+        "r": "0x8b68b0211c6dba256a2802cac4538c8e7543cd92",
+        "s": "0xa1842e239d32a6cd829660add2ed2702afc3b466"
+      }
+    }
+  ]
+}
